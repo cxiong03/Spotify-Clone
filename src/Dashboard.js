@@ -14,8 +14,8 @@ export default function Dashboard({ code }) {
     const accessToken = useAuth(code)
     const [search, setSearch] = useState("")
     const [searchResults, setSearchResults] = useState([])
-    const [playingTrack, setPlayingTrack] = useState([])
-    const [lyrics, setLyrics] = useState([])
+    const [playingTrack, setPlayingTrack] = useState()
+    const [lyrics, setLyrics] = useState("")
 
     function chooseTrack(track) {
         setPlayingTrack(track)
@@ -29,14 +29,15 @@ export default function Dashboard({ code }) {
         axios.get("http://localhost:3001/lyrics", {
             params: {
                 track: playingTrack.title,
-                artist: playingTrack.artis
-            }
+                artist: playingTrack.artist,
+            },
         }).then(res => {
             setLyrics(res.data.lyrics)
-        }, [playingTrack])
-    })
+        })
+    }, [playingTrack])
 
     useEffect(() => {
+        console.log("DASHBOARD");
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
     }, [accessToken])
@@ -63,8 +64,7 @@ export default function Dashboard({ code }) {
                 }
             }))
         })
-
-        return () => cancel = true
+        return () => (cancel = true)
     }, [search, accessToken])
 
     return (

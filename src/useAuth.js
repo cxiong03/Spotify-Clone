@@ -7,7 +7,8 @@ export default function useAuth(code) {
     const [expiresIn, setExpiresIn] = useState()
     
     useEffect(() => {
-        axios.post('http://localhost:3001/login', {
+        console.log("Server Login")
+        axios.post("http://localhost:3001/login", {
             code,
         }).then(res => {
             setAccessToken(res.data.accessToken)
@@ -21,10 +22,11 @@ export default function useAuth(code) {
     }, [code])
 
     useEffect(() => {
+        console.log("Refresh")
         if (!refreshToken || !expiresIn) return
         const interval = setInterval(() => {
 
-        axios.post('http://localhost:3001/refresh', {
+        axios.post("http://localhost:3001/refresh", {
                 refreshToken,
             }).then(res => {
                 setAccessToken(res.data.accessToken)
@@ -34,9 +36,10 @@ export default function useAuth(code) {
                 window.location = "/"
             })
         }, (expiresIn - 60) * 1000)
+        console.log("Epires = 60 Before Return")
 
         return () => clearInterval(interval)
     }, [refreshToken, expiresIn])
-
+    
     return accessToken
 }
