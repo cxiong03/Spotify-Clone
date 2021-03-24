@@ -40,7 +40,7 @@ export default function Dashboard({ code }) {
         console.log("DASHBOARD");
         if (!accessToken) return
         spotifyApi.setAccessToken(accessToken)
-    }, [accessToken])
+    }, [])
 
     useEffect(() => {
         if (!search) return setSearchResults([])
@@ -65,7 +65,7 @@ export default function Dashboard({ code }) {
             }))
         })
         return () => (cancel = true)
-    }, [search, accessToken])
+    }, [accessToken])
 
     return (
         <Container className="d-flex flex-column py-2" style={{

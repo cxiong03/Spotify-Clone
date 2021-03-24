@@ -14,12 +14,14 @@ export default function useAuth(code) {
             setAccessToken(res.data.accessToken)
             setRefreshToken(res.data.refreshToken)
             setExpiresIn(res.data.expiresIn)
-            window.history.pushState({}, null, "/")
+            console.log("History")
+            // window.history.pushState({}, null, "/")
         })
-        .catch(() => {
+        .catch((e) => {
+            console.log(e.message)
             window.location = "/"
         })
-    }, [code])
+    }, [])
 
     useEffect(() => {
         console.log("Refresh")
@@ -33,13 +35,14 @@ export default function useAuth(code) {
                 setExpiresIn(res.data.expiresIn)
             })
             .catch(() => {
+                console.log("UseAuth-2")
                 window.location = "/"
             })
         }, (expiresIn - 60) * 1000)
         console.log("Epires = 60 Before Return")
 
         return () => clearInterval(interval)
-    }, [refreshToken, expiresIn])
+    }, [])
     
     return accessToken
 }
